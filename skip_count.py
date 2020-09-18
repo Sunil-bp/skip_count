@@ -4,6 +4,9 @@ import math
 
 #read from primary camera
 cap = cv2.VideoCapture(0)
+width = cap.get(3)  # float
+height = cap.get(4)  # float
+print(f"width = {width} height = {height}")
 if not cap.isOpened():
     print("Cannot open camera")
     exit()
@@ -16,13 +19,15 @@ while (1):
         if not ret:
             print("Can't receive frame (stream end?). Exiting ...")
             break
+
         frame = cv2.flip(frame, 1)
         kernel = np.ones((3, 3), np.uint8)
-
         # define region of interest
         roi = frame[600:500, 500:250]
-
+        print(frame)
+        wait  = input("HI")
         cv2.rectangle(frame, (600, 500), (10, 250), (0, 255, 0), 0)
+        cv2.line(frame, (0, 0), (511, 511), (255, 0, 0), 5)
         hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
 
         # define range of skin color in HSV
