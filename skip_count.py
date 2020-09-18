@@ -63,15 +63,35 @@ while (1):
         epsilon = 0.0005 * cv2.arcLength(cnt, True)
         approx = cv2.approxPolyDP(cnt, epsilon, True)
 
-        color_image = np.zeros((512, 512, 3), np.uint8)
+        color_image = np.zeros((312, 512, 3), np.uint8)
 
         #draw around my legs
         cv2.drawContours(color_image, [cnt], 0, (0, 255, 0), 3)
-        # make convex hull around hand
-        hull = cv2.convexHull(cnt)
+
+        # Used to flatted the array containing
+        # the co-ordinates of the vertices.
+        n = cnt.ravel()
+        i = 0
+
+        for j in n:
+            if (i % 2 == 0):
+                x = n[i]
+                y = n[i + 1]
+
+                # String containing the co-ordinates.
+                string = str(x) + " " + str(y)
+
+                if (i == 0):
+                    # text on topmost co-ordinate.
+                    cv2.putText(color_image, "Arrow tip", (x, y),
+                                font, 0.5, (255, 0, 0))
+                else:
+                    # text on remaining co-ordinates.
+                    cv2.putText(color_image, string, (x, y),
+                                font, 0.5, (0, 255, 0))
+            i = i + 1
 
         areacnt = cv2.contourArea(cnt)
-        print(areacnt)
         cv2.imshow('mask', mask)
         cv2.imshow('legs', color_image)
         cv2.imshow('frame', frame)
