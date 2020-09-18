@@ -14,7 +14,7 @@ while (1):
         kernel = np.ones((3, 3), np.uint8)
 
         # define region of interest
-        roi = frame[100:300, 100:300]
+        roi = frame[100:500, 100:500]
 
         cv2.rectangle(frame, (100, 100), (300, 300), (0, 255, 0), 0)
         hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
@@ -33,18 +33,10 @@ while (1):
         mask = cv2.GaussianBlur(mask, (5, 5), 100)
 
         # find contours
-        _, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-        # find contour of max area(hand)
-        cnt = max(contours, key=lambda x: cv2.contourArea(x))
-
-        # approx the contour a little
-        epsilon = 0.0005 * cv2.arcLength(cnt, True)
-        approx = cv2.approxPolyDP(cnt, epsilon, True)
-
         cv2.imshow('mask', mask)
         cv2.imshow('frame', frame)
     except:
+        print("Eoor")
         pass
 
     k = cv2.waitKey(5) & 0xFF
