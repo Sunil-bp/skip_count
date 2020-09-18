@@ -13,7 +13,9 @@ print(f"width = {width} height = {height}")
 if not cap.isOpened():
     print("Cannot open camera")
     exit()
-
+y2 = []
+x2 = []
+intwe = 0
 while (1):
     try:
         # Capture frame-by-frame
@@ -68,28 +70,12 @@ while (1):
         #draw around my legs
         cv2.drawContours(color_image, [cnt], 0, (0, 255, 0), 3)
 
-        # Used to flatted the array containing
-        # the co-ordinates of the vertices.
-        n = cnt.ravel()
-        i = 0
-
-        for j in n:
-            if (i % 2 == 0):
-                x = n[i]
-                y = n[i + 1]
-
-                # String containing the co-ordinates.
-                string = str(x) + " " + str(y)
-
-                if (i == 0):
-                    # text on topmost co-ordinate.
-                    cv2.putText(color_image, "Arrow tip", (x, y),
-                                font, 0.5, (255, 0, 0))
-                else:
-                    # text on remaining co-ordinates.
-                    cv2.putText(color_image, string, (x, y),
-                                font, 0.5, (0, 255, 0))
-            i = i + 1
+        x, y, w, h = cv2.boundingRect(cnt)
+        print(y+h)
+        y2.append(y+h)
+        x2.append(intwe++)
+        cv2.rectangle(color_image, (x, y), (x + w, y + h), (0, 0, 255), 2)
+        cv2.line(color_image, (0, y+h), (640, y+h), (255, 0, 0), 1)
 
         areacnt = cv2.contourArea(cnt)
         cv2.imshow('mask', mask)
@@ -101,6 +87,8 @@ while (1):
         print(sys.exc_info()[2])
         wait = input("sgdgsd")
         print("Eoor")
+        print(x2)
+        print(y2)
         pass
 
     k = cv2.waitKey(5) & 0xFF
