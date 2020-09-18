@@ -15,7 +15,11 @@ if not cap.isOpened():
     exit()
 y2 = []
 x2 = []
+buffer = list(np.ones(20))
 intwe = 0
+peek = 0
+pre_peek = 0
+count = 0
 while (1):
     try:
         # Capture frame-by-frame
@@ -35,7 +39,6 @@ while (1):
         cv2.rectangle(frame, (0, 200), (640,480), (0, 255, 0), 3)
         cv2.line(frame, (0, 0), (640, 480), (255, 0, 0), 1)
         font = cv2.FONT_HERSHEY_SIMPLEX
-        count = 0
         cv2.putText(frame, str(count), (450, 80), font, 3, (255, 255, 255), 1, cv2.LINE_AA)
         # define range of skin color in HSV
         lower_skin = np.array([0, 44, 71], dtype=np.uint8)
@@ -72,8 +75,16 @@ while (1):
 
         x, y, w, h = cv2.boundingRect(cnt)
         print(y+h)
-        y2.append(y+h)
-        x2.append(intwe++)
+
+        #find peak
+        buffer.append(y+h)
+        buffer.pop(0)
+        if max(buffer) in [buffer[4],buffer[5],buffer[6]]:
+            peek = max(buffer)
+        if peek != pre_peek:
+            count += 1
+        pre_peek = peek
+
         cv2.rectangle(color_image, (x, y), (x + w, y + h), (0, 0, 255), 2)
         cv2.line(color_image, (0, y+h), (640, y+h), (255, 0, 0), 1)
 
@@ -87,8 +98,6 @@ while (1):
         print(sys.exc_info()[2])
         wait = input("sgdgsd")
         print("Eoor")
-        print(x2)
-        print(y2)
         pass
 
     k = cv2.waitKey(5) & 0xFF
