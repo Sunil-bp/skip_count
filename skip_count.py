@@ -14,9 +14,9 @@ while (1):
         kernel = np.ones((3, 3), np.uint8)
 
         # define region of interest
-        roi = frame[100:500, 100:500]
+        roi = frame[600:500, 500:250]
 
-        cv2.rectangle(frame, (100, 100), (300, 300), (0, 255, 0), 0)
+        cv2.rectangle(frame, (600, 500), (10, 250), (0, 255, 0), 0)
         hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
 
         # define range of skin color in HSV
@@ -35,7 +35,9 @@ while (1):
         # find contours
         cv2.imshow('mask', mask)
         cv2.imshow('frame', frame)
-    except:
+    except Exception as e:
+        print(e)
+        wait = input("sgdgsd")
         print("Eoor")
         pass
 
