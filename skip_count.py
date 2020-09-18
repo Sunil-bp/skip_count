@@ -2,14 +2,20 @@ import cv2
 import numpy as np
 import math
 
+#read from primary camera
 cap = cv2.VideoCapture(0)
+if not cap.isOpened():
+    print("Cannot open camera")
+    exit()
 
 while (1):
-
-    try:  # an error comes if it does not find anything in window as it cannot find contour of max area
-        # therefore this try error statement
-
+    try:
+        # Capture frame-by-frame
         ret, frame = cap.read()
+        # if frame is read correctly ret is True
+        if not ret:
+            print("Can't receive frame (stream end?). Exiting ...")
+            break
         frame = cv2.flip(frame, 1)
         kernel = np.ones((3, 3), np.uint8)
 
