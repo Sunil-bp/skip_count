@@ -57,17 +57,23 @@ while (1):
             cnt = max(contours, key=lambda x: cv2.contourArea(x))
         except:
             print("no legs")
+            continue
 
         # approx the contour a little
         epsilon = 0.0005 * cv2.arcLength(cnt, True)
         approx = cv2.approxPolyDP(cnt, epsilon, True)
 
+        color_image = np.zeros((512, 512, 3), np.uint8)
+
+        #draw around my legs
+        cv2.drawContours(color_image, [cnt], 0, (0, 255, 0), 3)
         # make convex hull around hand
         hull = cv2.convexHull(cnt)
 
         areacnt = cv2.contourArea(cnt)
         print(areacnt)
         cv2.imshow('mask', mask)
+        cv2.imshow('legs', color_image)
         cv2.imshow('frame', frame)
     except Exception as e:
         print(traceback.format_exc())
