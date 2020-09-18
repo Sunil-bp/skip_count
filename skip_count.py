@@ -23,13 +23,14 @@ while (1):
         frame = cv2.flip(frame, 1)
         kernel = np.ones((3, 3), np.uint8)
         # define region of interest
-        roi = frame[600:500, 500:250]
-        print(frame)
-        wait  = input("HI")
-        cv2.rectangle(frame, (600, 500), (10, 250), (0, 255, 0), 0)
-        cv2.line(frame, (0, 0), (511, 511), (255, 0, 0), 5)
+        roi = frame[0:200, 200:480]
+
         hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
 
+        cv2.rectangle(frame, (0, 200), (640,480), (0, 255, 0), 3)
+        cv2.line(frame, (0, 0), (640, 480), (255, 0, 0), 1)
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        cv2.putText(frame, 'OpenCV', (10, 500), font, 4, (255, 255, 255), 2, cv2.LINE_AA)
         # define range of skin color in HSV
         lower_skin = np.array([0, 20, 70], dtype=np.uint8)
         upper_skin = np.array([20, 255, 255], dtype=np.uint8)
