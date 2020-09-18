@@ -50,10 +50,13 @@ while (1):
 
         # find contours
         # find contours
-        _, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         # find contour of max area(hand)
-        cnt = max(contours, key=lambda x: cv2.contourArea(x))
+        try:
+            cnt = max(contours, key=lambda x: cv2.contourArea(x))
+        except:
+            print("no legs")
 
         # approx the contour a little
         epsilon = 0.0005 * cv2.arcLength(cnt, True)
@@ -62,10 +65,14 @@ while (1):
         # make convex hull around hand
         hull = cv2.convexHull(cnt)
 
+        areacnt = cv2.contourArea(cnt)
+        print(areacnt)
         cv2.imshow('mask', mask)
         cv2.imshow('frame', frame)
     except Exception as e:
-        print(e)
+        print(traceback.format_exc())
+        # or
+        print(sys.exc_info()[2])
         wait = input("sgdgsd")
         print("Eoor")
         pass
